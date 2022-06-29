@@ -1,3 +1,9 @@
+import { Container } from './styles';
+
 export function Home() {
-  return <h1>Hello World</h1>;
+  return (
+    <Container>
+      <h1>Movies</h1>;
+    </Container>
+  );
 }

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { Container } from './stylesDetails';
 
 export function Details() {
   const [movieDetails, setMovieDetails] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const { id } = useParams();
 
@@ -14,9 +16,7 @@ export function Details() {
     axios
       .get(URL)
       .then(({ data }) => {
-
-        const {title, overview, poster_path,release_date} = data
-
+        const { title, overview, poster_path, release_date } = data;
         const movieDetails = {
           id,
           title,
@@ -24,8 +24,9 @@ export function Details() {
           image: `${image_path}${poster_path}`,
           releaseDate: release_date,
         };
+
         setMovieDetails(movieDetails);
-        console.log(movieDetails);
+        setLoading(false);
       })
       .catch((err) => {
         console.error('ops! ocorreu um erro' + err);
@@ -33,8 +34,22 @@ export function Details() {
   }, [id]);
 
   return (
-    <div>
-      <h1>Página de detalhes</h1>;
-    </div>
+    (loading && <h2 style={{ textAlign: 'center' }}>Carregando</h2>) || (
+      <Container>
+        <div className="movie">
+          <img src={movieDetails.image} alt={movieDetails.sinopse} />
+        </div>
+        <div className="details">
+          <h1>{movieDetails.title}</h1>
+          <span>Sinopse: {movieDetails.sinopse}</span>
+          <span className="release-date">
+            Release date: {movieDetails.releaseDate}
+          </span>
+          <Link to="/">
+            <button>Go Back</button>
+          </Link>
+        </div>
+      </Container>
+    )
   );
 }

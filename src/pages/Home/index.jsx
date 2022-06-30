@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Container, Movie, MovieList } from '../styles';
+import { Container, Movie, MovieList } from './styles';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export function Home() {
   const [movies, setMovies] = useState([]);
 
-  const URL = `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_MOVIE_KEY}&language=en-US&page=1`;
-
   const image_path = 'https://image.tmdb.org/t/p/w500';
 
   useEffect(() => {
+    const URL = `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_MOVIE_KEY}&language=en-US&page=1`;
     axios
       .get(URL)
       .then(({ data }) => {
@@ -28,12 +28,12 @@ export function Home() {
         {movies.map((movie) => {
           return (
             <Movie key={movie.id}>
-              <a href="https://br.web.img3.acsta.net/videothumbnails/189/153/18915394_20131022151706319.jpg">
+              <Link to={`/details/${movie.id}`}>
                 <img
                   src={`${image_path}${movie.poster_path}`}
                   alt={movie.title}
                 />
-              </a>
+              </Link>
               <span>{movie.title}</span>
             </Movie>
           );

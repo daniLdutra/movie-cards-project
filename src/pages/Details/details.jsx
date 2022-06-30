@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Container } from './stylesDetails';
 
@@ -8,6 +8,7 @@ export function Details() {
   const [loading, setLoading] = useState(true);
 
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const image_path = 'https://image.tmdb.org/t/p/w500';
 
@@ -33,6 +34,10 @@ export function Details() {
       });
   }, [id]);
 
+  const handleLastPage = () => {
+    navigate(-1);
+  };
+
   return (
     (loading && <h2 style={{ textAlign: 'center' }}>Carregando</h2>) || (
       <Container>
@@ -45,9 +50,7 @@ export function Details() {
           <span className="release-date">
             Release date: {movieDetails.releaseDate}
           </span>
-          <Link to="/">
-            <button>Go Back</button>
-          </Link>
+          <button onClick={handleLastPage}>Go Back</button>
         </div>
       </Container>
     )
